@@ -6,8 +6,7 @@ import { ImageIcon } from "@radix-ui/react-icons";
 import { open } from "@tauri-apps/plugin-dialog";
 import { exists, readFile } from "@tauri-apps/plugin-fs";
 import { toast } from "react-toastify";
-import { db, Playlist, Song } from "./dexie";
-import { Albums } from "./album";
+import { Albums, Playlist, Song } from "./type";
 import { useLiveQuery } from "dexie-react-hooks";
 
 const WARN_TAG = chalk.bgHex("#de2a18").hex("#FFFFFF")(" WARN ");
@@ -36,8 +35,8 @@ const coverAtom = atom("");
 const albumAtom = atom("");
 
 export const SettingPage: FC = () => {
-    const playlists: Playlist[] = useLiveQuery(() => db.playlists.toArray(), [], []);
-    const songs: Song[] = useLiveQuery(() => db.songs.toArray(), [], []);
+    const playlists: Playlist[] = useLiveQuery(() => extensionContext.playerDB.playlists.toArray(), [], []);
+    const songs: Song[] = useLiveQuery(() => extensionContext.playerDB.songs.toArray(), [], []);
     const albums: Albums = {};
 
     try {
@@ -143,7 +142,7 @@ export const SettingPage: FC = () => {
 
             for (const songId of needReplaceSongs) {
                 try {
-                    await db.songs.update(songId, { cover: coverBlob });
+                    await extensionContext.playerDB.songs.update(songId, { cover: coverBlob });
                     success++;
                 } catch (error) {
                     errored++;

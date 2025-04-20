@@ -5,7 +5,8 @@
   "scripts": {
     "build:dev": "rollup -c",
     "build:src": "rollup -c --environment NODE_ENV:production,SRCMAP:true",
-    "build": "rollup -c --environment NODE_ENV:production"
+    "build": "rollup -c --environment NODE_ENV:production",
+    "dev": "rollup -c --watch"
   },
   "amllPlayerMeta": {
     "id": "net.amatke31.replace-cover",

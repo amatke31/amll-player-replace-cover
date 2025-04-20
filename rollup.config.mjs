@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import json from "@rollup/plugin-json";
 import typescript from "@rollup/plugin-typescript";
 import { minify } from "rollup-plugin-esbuild";
@@ -55,5 +57,23 @@ export default defineConfig({
     external: ["react", "react/jsx-runtime", "react-dom", "jotai", "@radix-ui/themes"],
     plugins: [commonjs(), nodeResolve(), json(), typescript(), isProduction && minify({
         banner: banner.join("\n"),
-    })]
+    }), {
+        name: "copy-to-external-folder",
+        async writeBundle() {
+            let extensionsFolder;
+            if (process.platform === "darwin") {
+                extensionsFolder = path.resolve(process.env.HOME, "Library/Application Support/net.stevexmh.amllplayer/extensions");
+            } else if (process.platform === "win32") {
+                extensionsFolder = path.resolve(process.env.HOME, "net.stevexmh.amllplayer\\extensions");
+            } else {
+                extensionsFolder = path.resolve(process.env.HOME, ".local/share/net.stevexmh.amllplayer/extensions");
+            }
+
+            const outputFile = path.resolve("dist", `${packageJson.name}.js`);
+            const targetFile = path.resolve(extensionsFolder, `${packageJson.name}.js`);
+
+            fs.copyFileSync(outputFile, targetFile);
+            console.log(`Copied ${outputFile} to ${targetFile}`);
+        },
+    },]
 });
