@@ -64,7 +64,7 @@ export default defineConfig({
             if (process.platform === "darwin") {
                 extensionsFolder = path.resolve(process.env.HOME, "Library/Application Support/net.stevexmh.amllplayer/extensions");
             } else if (process.platform === "win32") {
-                extensionsFolder = path.resolve(process.env.HOME, "net.stevexmh.amllplayer\\extensions");
+                extensionsFolder = path.resolve(process.env.HOME, "AppData\\net.stevexmh.amllplayer\\extensions");
             } else {
                 extensionsFolder = path.resolve(process.env.HOME, ".local/share/net.stevexmh.amllplayer/extensions");
             }
