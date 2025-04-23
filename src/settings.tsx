@@ -35,7 +35,11 @@ const coverAtom = atom("");
 const albumAtom = atom("");
 
 export const SettingPage: FC = () => {
-    const playlists: Playlist[] = useLiveQuery(() => extensionContext.playerDB.playlists.toArray(), [], []);
+    const playlists: Playlist[] = useLiveQuery(
+        () => extensionContext.playerDB.playlists.toArray(),
+        [],
+        []
+    );
     const songs: Song[] = useLiveQuery(() => extensionContext.playerDB.songs.toArray(), [], []);
     const albums: Albums = {};
 
@@ -80,7 +84,7 @@ export const SettingPage: FC = () => {
         }
 
         async function getCoverBlob(cover: string) {
-            if (coverExtensions.some((ext) => cover.endsWith(ext))) {
+            if (coverExtensions.some((ext) => cover.toLowerCase().endsWith(ext))) {
                 try {
                     const fileContent = await readFile(cover);
 
